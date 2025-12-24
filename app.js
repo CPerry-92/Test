@@ -1,9 +1,4 @@
-/* global WHO_IS_IT_NAMES */
-
 (() => {
-  // -----------------------------
-  // State
-  // -----------------------------
   const state = {
     selectedSeconds: 60,
     remainingSeconds: 60,
@@ -15,9 +10,6 @@
     countdownTimerId: null
   };
 
-  // -----------------------------
-  // Elements
-  // -----------------------------
   const el = {
     screenHome: document.getElementById("screenHome"),
     screenSettings: document.getElementById("screenSettings"),
@@ -47,12 +39,10 @@
     btnNextTurn: document.getElementById("btnNextTurn"),
     btnEndGame: document.getElementById("btnEndGame"),
 
-    btnSound: document.getElementById("btnSound")
+    btnSound: document.getElementById("btnSound"),
+    gameError: document.getElementById("gameError")
   };
 
-  // -----------------------------
-  // Utilities
-  // -----------------------------
   function showScreen(screenEl) {
     [el.screenHome, el.screenSettings, el.screenCountdown, el.screenGame]
       .forEach(s => s.classList.remove("screen-active"));
@@ -65,19 +55,23 @@
     return Math.min(max, Math.max(min, x));
   }
 
-  function shuffle(array) {
-    // Fisher–Yates
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
+  function getNamesArraySafe() {
+    const list = window.WHO_IS_IT_NAMES;
+    return Array.isArray(list) ? list : [];
   }
 
   function pickFiveNames() {
-    const names = WHO_IS_IT_NAMES;
-    if (!Array.isArray(names) || names.length < 10) {
-      return ["Add names to names.js", "Example Name", "Example Name", "Example Name", "Example Name"];
+    const names = getNamesArraySafe();
+
+    // Fail-safe: never allow missing name list to stall the game
+    if (names.length < 10) {
+      return [
+        "Name list missing or too short",
+        "Check names.js exists and loads",
+        "Ensure names.js loads before app.js",
+        "Example Name",
+        "Example Name"
+      ];
     }
 
     // If we’ve used almost all names, reset used set.
@@ -93,6 +87,9 @@
       state.usedIndexes.add(idx);
       picked.push(names[idx]);
     }
+
+    // Another fail-safe (in case something weird happens)
+    while (picked.length < 5) picked.push(names[Math.floor(Math.random() * names.length)]);
 
     return picked;
   }
@@ -112,9 +109,18 @@
     el.score.textContent = String(state.score);
   }
 
-  // -----------------------------
-  // Sound (simple buzzer via Web Audio)
-  // -----------------------------
+  function showGameError(message) {
+    if (!el.gameError) return;
+    el.gameError.hidden = false;
+    el.gameError.textContent = message;
+  }
+
+  function clearGameError() {
+    if (!el.gameError) return;
+    el.gameError.hidden = true;
+    el.gameError.textContent = "";
+  }
+
   function playBuzzer() {
     if (!state.soundOn) return;
 
@@ -141,17 +147,16 @@
 
       o.onended = () => ctx.close().catch(() => {});
     } catch {
-      // If audio fails, silently ignore.
+      // ignore
     }
   }
 
   function updateSoundIcon() {
-    el.btnSound.innerHTML = state.soundOn ? '<span aria-hidden="true">🔊</span>' : '<span aria-hidden="true">🔇</span>';
+    el.btnSound.innerHTML = state.soundOn
+      ? '<span aria-hidden="true">🔊</span>'
+      : '<span aria-hidden="true">🔇</span>';
   }
 
-  // -----------------------------
-  // Modal
-  // -----------------------------
   function openModal() {
     el.finalScore.textContent = String(state.score);
     el.modalOverlay.classList.add("open");
@@ -163,9 +168,6 @@
     el.modalOverlay.setAttribute("aria-hidden", "true");
   }
 
-  // -----------------------------
-  // Timers
-  // -----------------------------
   function clearTimers() {
     if (state.turnTimerId) window.clearInterval(state.turnTimerId);
     if (state.countdownTimerId) window.clearInterval(state.countdownTimerId);
@@ -175,6 +177,7 @@
 
   function startCountdownThenGame() {
     clearTimers();
+    clearGameError();
 
     state.countdown = 5;
     el.countdownNumber.textContent = String(state.countdown);
@@ -187,12 +190,34 @@
       if (state.countdown <= 0) {
         window.clearInterval(state.countdownTimerId);
         state.countdownTimerId = null;
-        beginTurn();
+        beginTurnSafe();
       }
     }, 1000);
   }
 
+  function beginTurnSafe() {
+    try {
+      beginTurn();
+    } catch (err) {
+      // Ensure we still land on the game screen rather than appearing stuck
+      showScreen(el.screenGame);
+      clearTimers();
+      showGameError("The turn could not start due to an error. Check your names.js file and script order.");
+      // Provide something visible regardless
+      el.namesList.innerHTML = "";
+      ["Error starting turn", "Open browser console", "Fix names.js / ordering", "Then refresh", "Sorry!"].forEach(t => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        el.namesList.appendChild(li);
+      });
+      // eslint-disable-next-line no-console
+      console.error(err);
+    }
+  }
+
   function beginTurn() {
+    clearGameError();
+
     state.remainingSeconds = state.selectedSeconds;
     state.score = 0;
     updateHud();
@@ -216,9 +241,6 @@
     openModal();
   }
 
-  // -----------------------------
-  // Navigation / Actions
-  // -----------------------------
   function goHome() {
     closeModal();
     clearTimers();
@@ -231,9 +253,7 @@
     showScreen(el.screenSettings);
   }
 
-  // -----------------------------
-  // Event handlers
-  // -----------------------------
+  // Events
   el.btnPlay.addEventListener("click", goSettings);
   el.btnBackHome1.addEventListener("click", goHome);
   el.btnBackHome2.addEventListener("click", goSettings);
@@ -284,12 +304,11 @@
     updateSoundIcon();
   });
 
-  // Close modal if clicking the dark overlay (not the modal itself)
   el.modalOverlay.addEventListener("click", (e) => {
     if (e.target === el.modalOverlay) closeModal();
   });
 
-  // Initialise
+  // Init
   updateSoundIcon();
   goHome();
 })();

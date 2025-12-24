@@ -1,7 +1,5 @@
 :root{
   --bg: #0b1220;
-  --card: #111a2e;
-  --card2: #0f1730;
   --text: #e8eefc;
   --muted: #b6c2e2;
   --accent: #6ee7ff;
@@ -15,6 +13,7 @@
 
 *{ box-sizing: border-box; }
 html, body { height: 100%; }
+
 body{
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
@@ -24,60 +23,55 @@ body{
   color: var(--text);
 }
 
+/* App container */
 .app{
   max-width: 720px;
   margin: 0 auto;
-  padding: 18px 14px 28px;
+  padding: 16px 14px 22px;
 }
 
+/* Top bar */
 .topbar{
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .brand{
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .logo{
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 12px;
   display: grid;
   place-items: center;
-  font-weight: 800;
-  font-size: 20px;
+  font-weight: 900;
+  font-size: 18px;
   background: linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.95));
   color: #0b1220;
   box-shadow: var(--shadow);
 }
 
-.brand-title{
-  font-weight: 800;
-  letter-spacing: .2px;
-}
-.brand-subtitle{
-  color: var(--muted);
-  font-size: 13px;
-  margin-top: 2px;
-}
+.brand-title{ font-weight: 900; letter-spacing: .2px; }
+.brand-subtitle{ color: var(--muted); font-size: 13px; margin-top: 2px; }
 
 .screen{ display: none; }
 .screen-active{ display: block; }
 
 .h1{
   font-size: 40px;
-  margin: 14px 0 8px;
+  margin: 12px 0 8px;
   letter-spacing: .2px;
 }
 .h2{
   font-size: 26px;
-  margin: 14px 0 10px;
+  margin: 12px 0 10px;
 }
 .h3{
   font-size: 20px;
@@ -87,7 +81,7 @@ body{
 .lead{
   color: var(--muted);
   line-height: 1.5;
-  margin: 0 0 14px;
+  margin: 0 0 12px;
 }
 .lead.small{ font-size: 14px; }
 
@@ -103,7 +97,7 @@ body{
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .pill{
@@ -133,10 +127,9 @@ body{
   color: var(--text);
   border-radius: 12px;
   padding: 10px 0;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
 }
-
 .time-btn:hover{ background: rgba(232,238,252,.10); }
 .time-btn-active{
   border-color: rgba(110,231,255,.75);
@@ -149,15 +142,15 @@ body{
   margin: 14px 0;
 }
 
+/* Buttons */
 .btn{
   border: 1px solid transparent;
   border-radius: 14px;
   padding: 12px 14px;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
   user-select: none;
 }
-
 .btn-block{ width: 100%; }
 
 .btn-primary{
@@ -201,7 +194,7 @@ body{
 .countdown-circle{
   width: 160px;
   height: 160px;
-  margin: 16px auto 8px;
+  margin: 14px auto 8px;
   border-radius: 999px;
   display: grid;
   place-items: center;
@@ -211,7 +204,7 @@ body{
 }
 .countdown-number{
   font-size: 58px;
-  font-weight: 900;
+  font-weight: 950;
 }
 
 /* Game */
@@ -232,7 +225,7 @@ body{
   border: 1px solid rgba(232,238,252,.10);
   border-radius: 999px;
   padding: 8px 10px;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--text);
 }
 
@@ -243,31 +236,33 @@ body{
   gap: 10px;
   margin-bottom: 10px;
 }
-.names-title{
-  font-weight: 900;
-  letter-spacing: .2px;
-}
+.names-title{ font-weight: 950; letter-spacing: .2px; }
 
 .names-list{
   list-style: none;
   padding: 0;
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   display: grid;
   gap: 10px;
 }
-
 .names-list li{
   padding: 12px 12px;
   border-radius: 14px;
   background: rgba(232,238,252,.06);
   border: 1px solid rgba(232,238,252,.10);
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .controls{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+}
+
+.error-text{
+  margin: 10px 0 0;
+  color: rgba(255, 92, 122, .95);
+  font-weight: 800;
 }
 
 /* Modal */
@@ -280,9 +275,8 @@ body{
   align-items: center;
   justify-content: center;
 }
-.modal-overlay.open{
-  display: flex;
-}
+.modal-overlay.open{ display: flex; }
+
 .modal{
   width: 100%;
   max-width: 420px;
@@ -292,13 +286,85 @@ body{
   box-shadow: var(--shadow);
   padding: 16px;
 }
-.modal-score{
-  color: var(--muted);
-  margin: 0 0 12px;
+.modal-score{ color: var(--muted); margin: 0 0 12px; }
+
+/* ----------------------------
+   Mobile optimisation (portrait)
+   Focus: use vertical space well
+----------------------------- */
+@media (max-width: 520px){
+  .app{ padding: 12px 12px 18px; }
+  .topbar{ margin-bottom: 10px; }
+
+  .logo{ width: 36px; height: 36px; border-radius: 11px; font-size: 17px; }
+  .brand-subtitle{ font-size: 12px; }
+
+  .h1{ font-size: 32px; margin: 8px 0 6px; }
+  .h2{ font-size: 22px; margin: 10px 0 8px; }
+  .lead{ margin: 0 0 10px; font-size: 14px; }
+
+  .card{ padding: 12px; }
+
+  .row{ gap: 8px; margin-bottom: 10px; }
+  .pill{ padding: 6px 9px; font-size: 12px; }
+
+  .time-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .time-btn{ padding: 9px 0; border-radius: 12px; }
+
+  .btn{ padding: 11px 12px; border-radius: 14px; }
+  .icon-btn{ padding: 9px 10px; }
+
+  .divider{ margin: 12px 0; }
+
+  .game-top{
+    align-items: center;
+  }
+
+  .hud-item{
+    padding: 7px 9px;
+    font-size: 13px;
+  }
+
+  .names-header{ margin-bottom: 8px; }
+  .names-list{ gap: 8px; margin-bottom: 10px; }
+  .names-list li{
+    padding: 10px 12px;
+    border-radius: 14px;
+  }
+
+  /* Keep actions stacked on mobile for easier thumb reach */
+  .controls{ grid-template-columns: 1fr; }
 }
 
-@media (max-width: 520px){
-  .h1{ font-size: 34px; }
-  .time-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .controls{ grid-template-columns: 1fr; }
+/* Extra-compact mode for very short screens (e.g. older iPhones / browser chrome visible) */
+@media (max-width: 520px) and (max-height: 740px){
+  .countdown-circle{ width: 130px; height: 130px; margin: 10px auto 6px; }
+  .countdown-number{ font-size: 48px; }
+
+  .names-list li{ padding: 9px 12px; }
+  .btn{ padding: 10px 12px; }
+}
+
+/* ----------------------------
+   iPad / tablet landscape optimisation
+----------------------------- */
+@media (min-width: 768px) and (orientation: landscape) {
+  .app{
+    max-width: 1100px;
+    padding: 18px 22px 28px;
+  }
+
+  .game-card{
+    display: grid;
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .game-right .controls{
+    grid-template-columns: 1fr;
+  }
+
+  .names-list{ gap: 8px; }
+  .names-list li{ padding: 10px 12px; }
 }

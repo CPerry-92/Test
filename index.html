@@ -9,7 +9,6 @@
 <body>
   <div class="app">
 
-    <!-- Header -->
     <header class="topbar">
       <div class="brand">
         <div class="logo" aria-hidden="true">?</div>
@@ -28,7 +27,8 @@
     <main id="screenHome" class="screen screen-active" aria-labelledby="homeTitle">
       <h1 id="homeTitle" class="h1">Who Is It?</h1>
       <p class="lead">
-        You see five names. Pick one and describe them to the group without saying their name. When they guess, hit <strong>Guessed</strong>.
+        You see five names. Pick one and describe them to the group without saying their name.
+        When they guess, hit <strong>Guessed</strong>.
       </p>
 
       <div class="card">
@@ -43,7 +43,7 @@
         </button>
 
         <div class="fineprint">
-          Tip: Set the phone down facing the group so only the player can see the names.
+          Tip: Place the device so only the player can see the names.
         </div>
       </div>
     </main>
@@ -76,9 +76,11 @@
     <!-- COUNTDOWN -->
     <main id="screenCountdown" class="screen" aria-labelledby="countdownTitle">
       <h2 id="countdownTitle" class="h2">Get ready</h2>
+
       <div class="countdown-circle" aria-live="polite" aria-atomic="true">
         <span id="countdownNumber" class="countdown-number">5</span>
       </div>
+
       <p class="lead small">Show the screen to the player only.</p>
 
       <button id="btnBackHome2" class="btn btn-ghost btn-block" type="button">
@@ -101,30 +103,36 @@
         </div>
       </div>
 
-      <div class="card">
-        <div class="names-header">
-          <div class="names-title">Five names</div>
-          <button id="btnNewNames" class="icon-btn" type="button" aria-label="Get a new set of names">
-            🔄
-          </button>
+      <div class="card game-card">
+        <div class="game-left">
+          <div class="names-header">
+            <div class="names-title">Five names</div>
+            <button id="btnNewNames" class="icon-btn" type="button" aria-label="Get a new set of names">
+              🔄
+            </button>
+          </div>
+
+          <ul id="namesList" class="names-list" aria-live="polite"></ul>
+
+          <p id="gameError" class="error-text" hidden></p>
         </div>
 
-        <ul id="namesList" class="names-list" aria-live="polite"></ul>
+        <div class="game-right">
+          <div class="controls">
+            <button id="btnGuessed" class="btn btn-success btn-block" type="button">
+              ✅ Guessed
+            </button>
+            <button id="btnSkip" class="btn btn-ghost btn-block" type="button">
+              ⏭️ Skip
+            </button>
+          </div>
 
-        <div class="controls">
-          <button id="btnGuessed" class="btn btn-success btn-block" type="button">
-            ✅ Guessed
-          </button>
-          <button id="btnSkip" class="btn btn-ghost btn-block" type="button">
-            ⏭️ Skip
+          <div class="divider"></div>
+
+          <button id="btnEndEarly" class="btn btn-danger btn-block" type="button">
+            ⏹ End turn
           </button>
         </div>
-
-        <div class="divider"></div>
-
-        <button id="btnEndEarly" class="btn btn-danger btn-block" type="button">
-          ⏹ End turn
-        </button>
       </div>
     </main>
 
@@ -149,7 +157,7 @@
 
   </div>
 
-  <!-- Name list and game logic -->
+  <!-- IMPORTANT: names.js must load BEFORE app.js -->
   <script src="names.js"></script>
   <script src="app.js"></script>
 </body>
