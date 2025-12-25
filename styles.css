@@ -3,10 +3,10 @@
   --text: #eef3ff;
   --muted: #c0cbe6;
 
-  /* Subtle Christmas palette */
-  --mint: #66f0c2;     /* soft green */
-  --berry: #ff6b7a;    /* soft red */
-  --gold: #ffd08a;     /* warm highlight */
+  /* Subtle winter palette */
+  --mint: #66f0c2;
+  --berry: #ff6b7a;
+  --gold: #ffd08a;
 
   --cardTop: rgba(17,26,46,.92);
   --cardBot: rgba(10,18,32,.92);
@@ -17,7 +17,6 @@
   --line: rgba(238,243,255,.10);
   --line2: rgba(238,243,255,.14);
 
-  /* Button fills */
   --successBg: rgba(102,240,194,.18);
   --successBorder: rgba(102,240,194,.48);
 
@@ -33,7 +32,6 @@ body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
   color: var(--text);
 
-  /* Winter background with subtle “snow” specks */
   background:
     radial-gradient(1200px 900px at 20% 10%, rgba(102,240,194,.10), transparent 55%),
     radial-gradient(1100px 900px at 85% 0%, rgba(255,107,122,.10), transparent 55%),
@@ -45,7 +43,6 @@ body{
     var(--bg);
 }
 
-/* App uses full viewport height */
 .app{
   max-width: 720px;
   margin: 0 auto;
@@ -56,7 +53,6 @@ body{
   gap: 12px;
 }
 
-/* Top bar */
 .topbar{
   display: flex;
   align-items: center;
@@ -86,7 +82,7 @@ body{
   overflow: hidden;
 }
 
-/* Festive touch: subtle candy-cane sheen */
+/* subtle decorative sheen */
 .logo::before{
   content:"";
   position:absolute;
@@ -99,10 +95,10 @@ body{
     rgba(255,255,255,0) 10px,
     rgba(255,255,255,0) 22px
   );
-  opacity: .22;
+  opacity: .18;
 }
 
-/* Festive touch: tiny holly dot */
+/* tiny “star” dot */
 .logo::after{
   content:"";
   position:absolute;
@@ -112,16 +108,12 @@ body{
   height:8px;
   border-radius: 999px;
   background: rgba(255,208,138,.95);
-  box-shadow:
-    -8px 3px 0 0 rgba(102,240,194,.65),
-    -3px 9px 0 0 rgba(102,240,194,.55);
-  opacity: .9;
+  opacity: .85;
 }
 
 .brand-title{ font-weight: 1000; letter-spacing: .2px; }
 .brand-subtitle{ color: var(--muted); font-size: 12.5px; margin-top: 2px; }
 
-/* Screens */
 .screen{ display: none; }
 .screen-active{
   display: flex;
@@ -130,20 +122,9 @@ body{
   min-height: 0;
 }
 
-/* Typography */
-.h1{
-  font-size: 36px;
-  margin: 0;
-  letter-spacing: .2px;
-}
-.h2{
-  font-size: 22px;
-  margin: 6px 0 8px;
-}
-.h3{
-  font-size: 20px;
-  margin: 0 0 10px;
-}
+.h1{ font-size: 36px; margin: 0; letter-spacing: .2px; }
+.h2{ font-size: 22px; margin: 6px 0 8px; }
+.h3{ font-size: 20px; margin: 0 0 10px; }
 
 .lead{
   color: var(--muted);
@@ -153,7 +134,6 @@ body{
 }
 .lead.small{ font-size: 13.5px; }
 
-/* Cards */
 .card{
   background: linear-gradient(180deg, var(--cardTop), var(--cardBot));
   border: 1px solid var(--line);
@@ -176,7 +156,6 @@ body{
 }
 .divider-tight{ margin: 10px 0; }
 
-/* Buttons */
 .btn{
   border: 1px solid transparent;
   border-radius: 14px;
@@ -223,34 +202,38 @@ body{
   line-height: 1.35;
 }
 
-/* ---------------------------
-   HOME: reduce top-heaviness
-   Spread vertically within viewport
----------------------------- */
-#screenHome{
-  /* centres content in the available height while still feeling “top aligned” */
-  justify-content: center;
-  gap: 16px;
-}
-
+/* HOME layout */
+#screenHome{ justify-content: center; gap: 16px; }
 .hero{
   flex: 0 0 auto;
   max-width: 60ch;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 0;
+}
+.card-home{ flex: 0 0 auto; padding: 16px; }
+
+/* SETTINGS */
+.deck-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }
 
-/* Give home card a little breathing room */
-.card-home{
-  flex: 0 0 auto;
-  padding: 16px;
+.deck-btn{
+  border: 1px solid var(--line2);
+  background: rgba(238,243,255,.06);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 0;
+  font-weight: 950;
+  cursor: pointer;
+}
+.deck-btn-active{
+  border-color: rgba(102,240,194,.65);
+  background: rgba(102,240,194,.10);
 }
 
-/* ---------------------------
-   SETTINGS
----------------------------- */
 .time-grid{
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -276,13 +259,8 @@ body{
   gap: 10px;
 }
 
-/* ---------------------------
-   COUNTDOWN
----------------------------- */
-#screenCountdown{
-  justify-content: center;
-  gap: 12px;
-}
+/* COUNTDOWN */
+#screenCountdown{ justify-content: center; gap: 12px; }
 
 .countdown-circle{
   width: 132px;
@@ -300,10 +278,8 @@ body{
   font-weight: 1100;
 }
 
-/* ---------------------------
-   GAME: no-scroll, tight fit
----------------------------- */
-#screenGame{ min-height: 0; }
+/* GAME no-scroll */
+#screenGame, .game-card, .game-left, .names-list { min-height: 0; }
 
 .game-top{
   display: flex;
@@ -346,12 +322,9 @@ body{
   gap: 10px;
   margin-bottom: 8px;
 }
-.names-title{
-  font-weight: 1100;
-  letter-spacing: .2px;
-}
+.names-title{ font-weight: 1100; letter-spacing: .2px; }
 
-/* Fixed 5-row grid so list never grows, and always fits */
+/* Fixed 5-row list */
 .names-list{
   list-style: none;
   padding: 0;
@@ -360,7 +333,6 @@ body{
   grid-template-rows: repeat(5, 1fr);
   gap: 8px;
   height: 100%;
-  min-height: 0;
 }
 
 .names-list li{
@@ -373,9 +345,13 @@ body{
   font-weight: 1050;
   font-size: 16px;
   line-height: 1.12;
+
+  /* long TV/film titles: keep tidy */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Controls: default stacks on mobile portrait to conserve space and avoid overflow */
+/* Controls default stack */
 .controls{
   display: grid;
   grid-template-columns: 1fr;
@@ -388,9 +364,7 @@ body{
   font-weight: 900;
 }
 
-/* ---------------------------
-   MODAL
----------------------------- */
+/* MODAL */
 .modal-overlay{
   position: fixed;
   inset: 0;
@@ -413,24 +387,19 @@ body{
 }
 .modal-score{ color: var(--muted); margin: 0 0 12px; }
 
-/* ---------------------------
-   iPhone portrait: reduce card width & keep home nicely centred
----------------------------- */
+/* Mobile */
 @media (max-width: 520px){
   .app{ padding: 14px 12px 16px; gap: 10px; }
   .h1{ font-size: 34px; }
   .lead{ font-size: 14.5px; }
-
   #screenHome{ justify-content: center; gap: 14px; }
-  .card-home{ padding: 14px; }
 
   .time-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-/* Extra short screens: tighten slightly to guarantee no scroll */
+/* Short screens */
 @media (max-width: 520px) and (max-height: 740px){
   .h1{ font-size: 30px; }
-  .lead{ font-size: 14px; }
   .btn{ padding: 11px 12px; }
 
   .countdown-circle{ width: 120px; height: 120px; }
@@ -440,7 +409,7 @@ body{
   .names-list li{ padding: 9px 12px; font-size: 15.5px; }
 }
 
-/* iPad portrait: slightly bigger */
+/* iPad portrait */
 @media (min-width: 768px) and (orientation: portrait){
   .app{ max-width: 860px; padding: 20px 18px 20px; }
   .h1{ font-size: 44px; }
@@ -448,19 +417,13 @@ body{
   .lead{ font-size: 16px; }
   .names-list li{ font-size: 18px; padding: 11px 14px; }
   .hud-item{ font-size: 14px; padding: 8px 11px; }
-  #screenHome{ justify-content: center; gap: 18px; }
 }
 
-/* iPad landscape: tighter fit for names + centred guessed/skip, end-turn pinned bottom */
+/* iPad landscape: bigger text + tight fit + centre guessed/skip */
 @media (min-width: 900px) and (orientation: landscape){
-  .app{
-    max-width: 1120px;
-    padding: 16px 20px 16px;
-  }
+  .app{ max-width: 1120px; padding: 16px 20px 16px; }
 
   .h2{ font-size: 30px; margin: 4px 0 6px; }
-
-  .game-top{ margin-bottom: 4px; }
 
   .game-card{
     display: grid;
@@ -472,7 +435,7 @@ body{
   }
 
   .names-header{ margin-bottom: 6px; }
-  .names-list{ gap: 6px; min-height: 0; }
+  .names-list{ gap: 6px; }
 
   .names-list li{
     padding: 10px 12px;
@@ -486,14 +449,13 @@ body{
     min-height: 0;
   }
 
-  /* Centre guessed/skip vertically */
+  /* centre guessed/skip */
   .controls{
     margin-top: auto;
     margin-bottom: auto;
     gap: 10px;
   }
 
-  /* Keep end turn at bottom */
   .divider-tight{ margin: 10px 0; }
   .btn{ padding: 12px 14px; font-size: 16px; }
 }

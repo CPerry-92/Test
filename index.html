@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#07121c" />
-  <title>Who Is It?</title>
+  <title>Take a Guess</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -14,8 +14,8 @@
       <div class="brand">
         <div class="logo" aria-hidden="true">?</div>
         <div>
-          <div class="brand-title">Who Is It?</div>
-          <div class="brand-subtitle">Holiday Edition</div>
+          <div class="brand-title">Take a Guess</div>
+          <div class="brand-subtitle">Quick-fire party guessing game</div>
         </div>
       </div>
     </header>
@@ -23,9 +23,9 @@
     <!-- HOME -->
     <main id="screenHome" class="screen screen-active" aria-labelledby="homeTitle">
       <div class="hero">
-        <h1 id="homeTitle" class="h1">Who Is It?</h1>
+        <h1 id="homeTitle" class="h1">Take a Guess</h1>
         <p class="lead">
-          You’ll see five names. Choose one and describe them to the group without saying their name.
+          You’ll see five prompts. Pick one and describe it to the group without saying the exact words.
           When they guess, tap <strong>Guessed</strong> to score and refresh the list.
         </p>
       </div>
@@ -35,7 +35,7 @@
           ▶ Play game
         </button>
         <p class="fineprint">
-          Tip: Keep the device facing the player so only they can see the names.
+          Tip: Keep the device facing the player so only they can see the prompts.
         </p>
       </div>
     </main>
@@ -45,6 +45,15 @@
       <h2 id="settingsTitle" class="h2">Turn settings</h2>
 
       <div class="card card-settings">
+        <label class="label">Deck</label>
+        <div class="deck-grid" role="radiogroup" aria-label="Select a deck">
+          <button class="deck-btn deck-btn-active" type="button" data-deck="people">People</button>
+          <button class="deck-btn" type="button" data-deck="tvfilm">TV &amp; Film</button>
+          <button class="deck-btn" type="button" data-deck="mixed">Mixed</button>
+        </div>
+
+        <div class="divider"></div>
+
         <label class="label">Time limit</label>
         <div class="time-grid" role="radiogroup" aria-label="Select a time limit">
           <button class="time-btn" type="button" data-seconds="30">30s</button>
@@ -58,7 +67,7 @@
 
         <div class="settings-actions">
           <button id="btnStart" class="btn btn-primary btn-block" type="button">
-            🎄 Start turn
+            🎬 Start turn
           </button>
           <button id="btnBackHome1" class="btn btn-ghost btn-block" type="button">
             ← Back
@@ -94,19 +103,22 @@
           <div class="hud-item" aria-label="Score">
             ⭐ <span id="score">0</span>
           </div>
+          <div class="hud-item" aria-label="Deck in use">
+            🎴 <span id="deckLabel">People</span>
+          </div>
         </div>
       </div>
 
       <div class="card game-card">
         <div class="game-left">
           <div class="names-header">
-            <div class="names-title">Five names</div>
-            <button id="btnNewNames" class="icon-btn" type="button" aria-label="Get a new set of names">
+            <div class="names-title">Five prompts</div>
+            <button id="btnNewItems" class="icon-btn" type="button" aria-label="Get a new set of prompts">
               🔄
             </button>
           </div>
 
-          <ul id="namesList" class="names-list" aria-live="polite"></ul>
+          <ul id="itemsList" class="names-list" aria-live="polite"></ul>
           <p id="gameError" class="error-text" hidden></p>
         </div>
 
@@ -139,7 +151,7 @@
 
         <div class="modal-actions">
           <button id="btnNextTurn" class="btn btn-primary btn-block" type="button">
-            🔁 Next turn (same time)
+            🔁 Next turn (same settings)
           </button>
           <button id="btnEndGame" class="btn btn-ghost btn-block" type="button">
             🏠 End game
@@ -150,7 +162,7 @@
 
   </div>
 
-  <script src="names.js"></script>
+  <script src="decks.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
