@@ -82,7 +82,7 @@ body{
   overflow: hidden;
 }
 
-/* subtle decorative sheen */
+/* Festive but subtle: soft sheen */
 .logo::before{
   content:"";
   position:absolute;
@@ -98,7 +98,7 @@ body{
   opacity: .18;
 }
 
-/* tiny “star” dot */
+/* Tiny “star” dot */
 .logo::after{
   content:"";
   position:absolute;
@@ -122,6 +122,7 @@ body{
   min-height: 0;
 }
 
+/* Typography */
 .h1{ font-size: 36px; margin: 0; letter-spacing: .2px; }
 .h2{ font-size: 22px; margin: 6px 0 8px; }
 .h3{ font-size: 20px; margin: 0 0 10px; }
@@ -202,7 +203,7 @@ body{
   line-height: 1.35;
 }
 
-/* HOME layout */
+/* HOME: less top heavy */
 #screenHome{ justify-content: center; gap: 16px; }
 .hero{
   flex: 0 0 auto;
@@ -211,7 +212,7 @@ body{
   flex-direction: column;
   gap: 10px;
 }
-.card-home{ flex: 0 0 auto; padding: 16px; }
+.card-home{ padding: 16px; }
 
 /* SETTINGS */
 .deck-grid{
@@ -254,10 +255,7 @@ body{
   background: rgba(102,240,194,.10);
 }
 
-.settings-actions{
-  display: grid;
-  gap: 10px;
-}
+.settings-actions{ display: grid; gap: 10px; }
 
 /* COUNTDOWN */
 #screenCountdown{ justify-content: center; gap: 12px; }
@@ -273,12 +271,9 @@ body{
   box-shadow: 0 0 0 8px rgba(255,208,138,.08);
   background: rgba(238,243,255,.04);
 }
-.countdown-number{
-  font-size: 50px;
-  font-weight: 1100;
-}
+.countdown-number{ font-size: 50px; font-weight: 1100; }
 
-/* GAME no-scroll */
+/* GAME (no scroll) */
 #screenGame, .game-card, .game-left, .names-list { min-height: 0; }
 
 .game-top{
@@ -324,7 +319,7 @@ body{
 }
 .names-title{ font-weight: 1100; letter-spacing: .2px; }
 
-/* Fixed 5-row list */
+/* fixed 5-row grid */
 .names-list{
   list-style: none;
   padding: 0;
@@ -345,13 +340,11 @@ body{
   font-weight: 1050;
   font-size: 16px;
   line-height: 1.12;
-
-  /* long TV/film titles: keep tidy */
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Controls default stack */
 .controls{
   display: grid;
   grid-template-columns: 1fr;
@@ -392,8 +385,8 @@ body{
   .app{ padding: 14px 12px 16px; gap: 10px; }
   .h1{ font-size: 34px; }
   .lead{ font-size: 14.5px; }
-  #screenHome{ justify-content: center; gap: 14px; }
 
+  #screenHome{ gap: 14px; }
   .time-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
@@ -419,10 +412,9 @@ body{
   .hud-item{ font-size: 14px; padding: 8px 11px; }
 }
 
-/* iPad landscape: bigger text + tight fit + centre guessed/skip */
+/* iPad landscape: tighten list + centre guessed/skip + end turn bottom */
 @media (min-width: 900px) and (orientation: landscape){
   .app{ max-width: 1120px; padding: 16px 20px 16px; }
-
   .h2{ font-size: 30px; margin: 4px 0 6px; }
 
   .game-card{
@@ -449,7 +441,7 @@ body{
     min-height: 0;
   }
 
-  /* centre guessed/skip */
+  /* centre guessed/skip vertically */
   .controls{
     margin-top: auto;
     margin-bottom: auto;
