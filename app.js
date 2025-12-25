@@ -3,7 +3,6 @@
     selectedSeconds: 60,
     remainingSeconds: 60,
     score: 0,
-    soundOn: true,
     countdown: 5,
     usedIndexes: new Set(),
     turnTimerId: null,
@@ -39,7 +38,6 @@
     btnNextTurn: document.getElementById("btnNextTurn"),
     btnEndGame: document.getElementById("btnEndGame"),
 
-    btnSound: document.getElementById("btnSound"),
     gameError: document.getElementById("gameError")
   };
 
@@ -63,8 +61,7 @@
   function pickFiveNames() {
     const names = getNamesArraySafe();
 
-    // Fail-safe: never allow missing name list to stall the game
-    if (names.length < 10) {
+    if (names.length < 50) {
       return [
         "Name list missing or too short",
         "Check names.js exists and loads",
@@ -74,13 +71,12 @@
       ];
     }
 
-    // If we’ve used almost all names, reset used set.
     if (state.usedIndexes.size > names.length - 10) state.usedIndexes.clear();
 
     const picked = [];
     let safety = 0;
 
-    while (picked.length < 5 && safety < 5000) {
+    while (picked.length < 5 && safety < 10000) {
       safety++;
       const idx = Math.floor(Math.random() * names.length);
       if (state.usedIndexes.has(idx)) continue;
@@ -88,9 +84,7 @@
       picked.push(names[idx]);
     }
 
-    // Another fail-safe (in case something weird happens)
     while (picked.length < 5) picked.push(names[Math.floor(Math.random() * names.length)]);
-
     return picked;
   }
 
@@ -119,42 +113,6 @@
     if (!el.gameError) return;
     el.gameError.hidden = true;
     el.gameError.textContent = "";
-  }
-
-  function playBuzzer() {
-    if (!state.soundOn) return;
-
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioContext();
-
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-
-      o.type = "sawtooth";
-      o.frequency.setValueAtTime(180, ctx.currentTime);
-      o.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + 0.35);
-
-      g.gain.setValueAtTime(0.0001, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + 0.05);
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.55);
-
-      o.connect(g);
-      g.connect(ctx.destination);
-
-      o.start();
-      o.stop(ctx.currentTime + 0.6);
-
-      o.onended = () => ctx.close().catch(() => {});
-    } catch {
-      // ignore
-    }
-  }
-
-  function updateSoundIcon() {
-    el.btnSound.innerHTML = state.soundOn
-      ? '<span aria-hidden="true">🔊</span>'
-      : '<span aria-hidden="true">🔇</span>';
   }
 
   function openModal() {
@@ -199,17 +157,17 @@
     try {
       beginTurn();
     } catch (err) {
-      // Ensure we still land on the game screen rather than appearing stuck
       showScreen(el.screenGame);
       clearTimers();
-      showGameError("The turn could not start due to an error. Check your names.js file and script order.");
-      // Provide something visible regardless
+      showGameError("The turn could not start. Check names.js and script order, then refresh.");
+
       el.namesList.innerHTML = "";
-      ["Error starting turn", "Open browser console", "Fix names.js / ordering", "Then refresh", "Sorry!"].forEach(t => {
+      ["Error starting turn", "Check names.js exists", "Check script order", "Refresh page", "Sorry!"].forEach(t => {
         const li = document.createElement("li");
         li.textContent = t;
         el.namesList.appendChild(li);
       });
+
       // eslint-disable-next-line no-console
       console.error(err);
     }
@@ -220,6 +178,7 @@
 
     state.remainingSeconds = state.selectedSeconds;
     state.score = 0;
+
     updateHud();
     renderNames();
     showScreen(el.screenGame);
@@ -237,7 +196,6 @@
 
   function endTurn() {
     clearTimers();
-    playBuzzer();
     openModal();
   }
 
@@ -253,62 +211,46 @@
     showScreen(el.screenSettings);
   }
 
-  // Events
+  // Navigation
   el.btnPlay.addEventListener("click", goSettings);
   el.btnBackHome1.addEventListener("click", goHome);
-  el.btnBackHome2.addEventListener("click", goSettings);
+  el.btnBackHome2.addEventListener("click", goSettings); // cancel countdown -> settings (keeps chosen time)
 
+  // Time selection
   el.timeButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       el.timeButtons.forEach(b => b.classList.remove("time-btn-active"));
       btn.classList.add("time-btn-active");
-
-      const seconds = clampInt(btn.dataset.seconds, 10, 600);
-      state.selectedSeconds = seconds;
+      state.selectedSeconds = clampInt(btn.dataset.seconds, 10, 600);
     });
   });
 
-  el.btnStart.addEventListener("click", () => {
-    startCountdownThenGame();
-  });
+  // Start
+  el.btnStart.addEventListener("click", startCountdownThenGame);
 
+  // Gameplay actions
   el.btnGuessed.addEventListener("click", () => {
     state.score += 1;
     updateHud();
     renderNames();
   });
 
-  el.btnSkip.addEventListener("click", () => {
-    renderNames();
-  });
+  el.btnSkip.addEventListener("click", renderNames);
+  el.btnNewNames.addEventListener("click", renderNames);
+  el.btnEndEarly.addEventListener("click", endTurn);
 
-  el.btnNewNames.addEventListener("click", () => {
-    renderNames();
-  });
-
-  el.btnEndEarly.addEventListener("click", () => {
-    endTurn();
-  });
-
+  // Next turn: SAME TIME LIMIT, straight into countdown
   el.btnNextTurn.addEventListener("click", () => {
     closeModal();
-    goSettings();
+    startCountdownThenGame();
   });
 
-  el.btnEndGame.addEventListener("click", () => {
-    goHome();
-  });
-
-  el.btnSound.addEventListener("click", () => {
-    state.soundOn = !state.soundOn;
-    updateSoundIcon();
-  });
+  el.btnEndGame.addEventListener("click", goHome);
 
   el.modalOverlay.addEventListener("click", (e) => {
     if (e.target === el.modalOverlay) closeModal();
   });
 
   // Init
-  updateSoundIcon();
   goHome();
 })();

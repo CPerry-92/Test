@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07121c" />
   <title>Who Is It?</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -14,37 +15,28 @@
         <div class="logo" aria-hidden="true">?</div>
         <div>
           <div class="brand-title">Who Is It?</div>
-          <div class="brand-subtitle">Describe. Guess. Score.</div>
+          <div class="brand-subtitle">Holiday Edition</div>
         </div>
       </div>
-
-      <button id="btnSound" class="icon-btn" type="button" aria-label="Toggle sound">
-        <span aria-hidden="true">🔊</span>
-      </button>
     </header>
 
     <!-- HOME -->
     <main id="screenHome" class="screen screen-active" aria-labelledby="homeTitle">
-      <h1 id="homeTitle" class="h1">Who Is It?</h1>
-      <p class="lead">
-        You see five names. Pick one and describe them to the group without saying their name.
-        When they guess, hit <strong>Guessed</strong>.
-      </p>
+      <div class="hero">
+        <h1 id="homeTitle" class="h1">Who Is It?</h1>
+        <p class="lead">
+          You’ll see five names. Choose one and describe them to the group without saying their name.
+          When they guess, tap <strong>Guessed</strong> to score and refresh the list.
+        </p>
+      </div>
 
-      <div class="card">
-        <div class="row">
-          <div class="pill" aria-label="Players">👥 2+</div>
-          <div class="pill" aria-label="Turns">⏱️ Timed turns</div>
-          <div class="pill" aria-label="Mobile friendly">📱 Mobile-friendly</div>
-        </div>
-
+      <div class="card card-home">
         <button id="btnPlay" class="btn btn-primary btn-block" type="button">
           ▶ Play game
         </button>
-
-        <div class="fineprint">
-          Tip: Place the device so only the player can see the names.
-        </div>
+        <p class="fineprint">
+          Tip: Keep the device facing the player so only they can see the names.
+        </p>
       </div>
     </main>
 
@@ -52,8 +44,8 @@
     <main id="screenSettings" class="screen" aria-labelledby="settingsTitle">
       <h2 id="settingsTitle" class="h2">Turn settings</h2>
 
-      <div class="card">
-        <label class="label" for="timeLimit">Time limit</label>
+      <div class="card card-settings">
+        <label class="label">Time limit</label>
         <div class="time-grid" role="radiogroup" aria-label="Select a time limit">
           <button class="time-btn" type="button" data-seconds="30">30s</button>
           <button class="time-btn" type="button" data-seconds="45">45s</button>
@@ -64,12 +56,14 @@
 
         <div class="divider"></div>
 
-        <button id="btnStart" class="btn btn-primary btn-block" type="button">
-          🚀 Start game
-        </button>
-        <button id="btnBackHome1" class="btn btn-ghost btn-block" type="button">
-          ← Back
-        </button>
+        <div class="settings-actions">
+          <button id="btnStart" class="btn btn-primary btn-block" type="button">
+            🎄 Start turn
+          </button>
+          <button id="btnBackHome1" class="btn btn-ghost btn-block" type="button">
+            ← Back
+          </button>
+        </div>
       </div>
     </main>
 
@@ -81,7 +75,7 @@
         <span id="countdownNumber" class="countdown-number">5</span>
       </div>
 
-      <p class="lead small">Show the screen to the player only.</p>
+      <p class="lead small">Turn starts automatically after the countdown.</p>
 
       <button id="btnBackHome2" class="btn btn-ghost btn-block" type="button">
         ← Cancel
@@ -93,7 +87,7 @@
       <div class="game-top">
         <h2 id="gameTitle" class="h2">Your turn</h2>
 
-        <div class="hud">
+        <div class="hud" aria-label="Turn status">
           <div class="hud-item" aria-label="Time remaining">
             ⏳ <span id="timeRemaining">60</span>s
           </div>
@@ -113,7 +107,6 @@
           </div>
 
           <ul id="namesList" class="names-list" aria-live="polite"></ul>
-
           <p id="gameError" class="error-text" hidden></p>
         </div>
 
@@ -127,7 +120,7 @@
             </button>
           </div>
 
-          <div class="divider"></div>
+          <div class="divider divider-tight"></div>
 
           <button id="btnEndEarly" class="btn btn-danger btn-block" type="button">
             ⏹ End turn
@@ -146,7 +139,7 @@
 
         <div class="modal-actions">
           <button id="btnNextTurn" class="btn btn-primary btn-block" type="button">
-            🔁 Next turn
+            🔁 Next turn (same time)
           </button>
           <button id="btnEndGame" class="btn btn-ghost btn-block" type="button">
             🏠 End game
@@ -157,7 +150,6 @@
 
   </div>
 
-  <!-- IMPORTANT: names.js must load BEFORE app.js -->
   <script src="names.js"></script>
   <script src="app.js"></script>
 </body>
